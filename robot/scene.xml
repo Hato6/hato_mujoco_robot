@@ -14,7 +14,7 @@
     <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
       markrgb="0.8 0.8 0.8" width="300" height="300"/>
     <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
-  <hfield name="perlin_hfield" size="1.0 0.75 0.2 0.2" file="../height_field.png" /><hfield name="image_hfield" size="1.0 1.0 0.02 0.1" file="../hato_hfield.png" /></asset>
+  <hfield name="perlin_hfield" size="1.0 0.75 0.2 0.2" file="../images/height_field.png" /><hfield name="image_hfield" size="1.0 1.0 0.02 0.1" file="../images/hato_hfield.png" /></asset>
 
 
   <worldbody>
