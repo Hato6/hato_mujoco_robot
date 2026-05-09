@@ -1,0 +1,156 @@
+<mujoco model="robot">
+    <compiler angle="radian" meshdir="meshes"/>
+    <!-- 设置重力和部分参数 -->
+    <option gravity="0 0 -9.81" timestep="0.001" iterations="100" solver="Newton" tolerance="1e-10" />
+    <size njmax="500" nconmax="100" />
+
+    <asset>
+        <mesh name="base_link" content_type="model/stl" file="base_link.STL"/>
+        <mesh name="lf_hip_roll" content_type="model/stl" file="lf_hip_roll.STL"/>
+        <mesh name="lf_hip_pitch" content_type="model/stl" file="lf_hip_pitch.STL"/>
+        <mesh name="lf_knee" content_type="model/stl" file="lf_knee.STL"/>
+        <mesh name="lb_hip_roll" content_type="model/stl" file="lb_hip_roll.STL"/>
+        <mesh name="lb_hip_pitch" content_type="model/stl" file="lb_hip_pitch.STL"/>
+        <mesh name="lb_knee" content_type="model/stl" file="lb_knee.STL"/>
+        <mesh name="rf_hip_roll" content_type="model/stl" file="rf_hip_roll.STL"/>
+        <mesh name="rf_hip_pitch" content_type="model/stl" file="rf_hip_pitch.STL"/>
+        <mesh name="rf_knee" content_type="model/stl" file="rf_knee.STL"/>
+        <mesh name="rb_hip_roll" content_type="model/stl" file="rb_hip_roll.STL"/>
+        <mesh name="rb_hip_pitch" content_type="model/stl" file="rb_hip_pitch.STL"/>
+        <mesh name="rb_knee" content_type="model/stl" file="rb_knee.STL"/>
+        <mesh name="l_motor" content_type="model/stl" file="l_motor.STL"/>
+        <mesh name="r_motor" content_type="model/stl" file="r_motor.STL"/>
+    </asset>
+
+    <worldbody>
+        <!-- 设置光源 -->
+        <light name="main_light" pos="0 0 1.5" dir="0 0 -1" directional="true" castshadow="true"/>
+        <!-- 设置地面及摩擦力 -->
+        <!-- <geom name="floor" type="plane" size="0 0 1" rgba="0.8 0.9 0.8 1" friction="1.5 0.01 0.005"/> -->
+
+        <!-- 设置初始高度 -->
+        <body name="base" pos="0 0 0.2">
+            <freejoint name="root_joint"/>
+            <!-- 设置imu -->
+            <site name="imu_site" pos="0 0 0" size="0.005" rgba="0 1 1 1"/>
+            <geom type="mesh" rgba="1 1 1 1" mesh="base_link"/>
+            <body name="lf_hip_roll" pos="0.029258 0.0665 0.03">
+                <inertial pos="0 -0.0102978 0" quat="0.5 0.5 0.5 0.5" mass="0.260983" diaginertia="7.24544e-05 4.61537e-05 4.52473e-05"/>
+                <geom type="mesh" rgba="0.529412 0.54902 0.54902 1" mesh="lf_hip_roll" contype="0" conaffinity="0"/>
+                <body name="lf_hip_pitch">
+                    <inertial pos="1.39083e-09 0.00278123 -0.0296272" quat="0.707105 -0.00155924 0.00155924 0.707105" mass="0.0113202" diaginertia="3.84476e-06 3.27678e-06 6.09459e-07"/>
+                    <joint name="jlf_hip_pitch" pos="0 0 0" axis="0 1 0" damping="0.1" armature="0.1"/>
+                    <geom type="mesh" rgba="1 1 1 1" mesh="lf_hip_pitch" contype="0" conaffinity="0"/>
+                    <body name="lf_knee" pos="0 0.006 -0.05" quat="0.990051 0 0.140707 0">
+                        <inertial pos="8.88293e-07 0.0017347 -0.0665765" quat="0.707108 1.09772e-05 -0.000303295 0.707105" mass="0.0215549" diaginertia="2.02928e-05 1.9397e-05 1.22527e-06"/>
+                        <joint name="jlf_knee" pos="0 0 0" axis="0 1 0"/>
+                        <geom type="mesh" rgba="0.776471 0.756863 0.737255 1" mesh="lf_knee" contype="0" conaffinity="0"/>
+                        <site name="lf_knee_connect" pos="0 0 -0.105" size="0.005" rgba="1 0 0 1"/>
+                        <body name="l_motor" pos="0 0.023 -0.105" quat="0.990051 0 -0.140707 0">
+                            <inertial pos="0 0.00155846 0" quat="0.707107 0 0 0.707107" mass="0.0933707" diaginertia="3.23068e-05 1.93902e-05 1.93902e-05"/>
+                            <joint name="jl_motor" pos="0 0 0" axis="0 1 0" damping="0.3" armature="0.1"/>
+                            <geom type="mesh" mesh="l_motor" rgba="0.298039 0.298039 0.298039 1" contype="0" conaffinity="0"/>
+                            <geom type="cylinder" size="0.0258 0.011" zaxis="0 1 0" friction="1.5 0.01 0.005" rgba="1 0 1 0"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+            <body name="lb_hip_roll" pos="-0.02925 0.0665 0.03">
+                <inertial pos="0 -0.0102978 0" quat="0.5 0.5 0.5 0.5" mass="0.260983" diaginertia="7.24544e-05 4.61537e-05 4.52473e-05"/>
+                <geom type="mesh" rgba="0.529412 0.54902 0.54902 1" mesh="lb_hip_roll" contype="0" conaffinity="0"/>
+                <body name="lb_hip_pitch">
+                    <inertial pos="1.08394e-09 0.006194 -0.0231928" quat="0.707105 0.00144907 -0.00144907 0.707105" mass="0.0144608" diaginertia="4.34985e-06 3.53587e-06 8.68555e-07"/>
+                    <joint name="jlb_hip_pitch" pos="0 0 0" axis="0 1 0" damping="0.1" armature="0.1"/>
+                    <geom type="mesh" rgba="1 1 1 1" mesh="lb_hip_pitch" contype="0" conaffinity="0"/>
+                    <body name="lb_knee" pos="0 0.005 -0.05" quat="0.990051 0 -0.140707 0">
+                        <inertial pos="-8.43633e-07 -0.00337117 -0.0555442" quat="0.707108 -1.09282e-05 0.000303247 0.707105" mass="0.0226877" diaginertia="2.03067e-05 1.9405e-05 1.23326e-06"/>
+                        <joint name="jlb_knee" pos="0 0 0" axis="0 1 0"/>
+                        <geom type="mesh" rgba="0.647059 0.619608 0.588235 1" mesh="lb_knee" contype="0" conaffinity="0"/>
+                        <site name="lb_knee_connect" pos="0 0 -0.105" size="0.005" rgba="1 0 0 1"/>
+                    </body>
+                </body>
+            </body>
+
+            <body name="rf_hip_roll" pos="0.029258 -0.0665 0.03">
+                <inertial pos="0 0.0102978 0" quat="0.5 0.5 0.5 0.5" mass="0.260983" diaginertia="7.24544e-05 4.61537e-05 4.52473e-05"/>
+                <geom type="mesh" rgba="0.529412 0.54902 0.54902 1" mesh="rf_hip_roll" contype="0" conaffinity="0"/>
+                <body name="rf_hip_pitch">
+                    <inertial pos="1.08395e-09 -0.00619395 -0.0231928" quat="0.707105 -0.00144906 0.00144906 0.707105" mass="0.0144608" diaginertia="4.34985e-06 3.53587e-06 8.68555e-07"/>
+                    <joint name="jrf_hip_pitch" pos="0 0 0" axis="0 -1 0" damping="0.1" armature="0.1"/>
+                    <geom type="mesh" rgba="1 1 1 1" mesh="rf_hip_pitch" contype="0" conaffinity="0"/>
+                    <body name="rf_knee" pos="0 -0.004 -0.05" quat="0.990051 0 0.140707 0">
+                        <inertial pos="9.35067e-07 0.00247087 -0.0665079" quat="0.707108 1.05782e-05 -0.000302897 0.707105" mass="0.0204922" diaginertia="2.02938e-05 1.93494e-05 1.17768e-06"/>
+                        <joint name="jrf_knee" pos="0 0 0" axis="0 -1 0"/>
+                        <geom type="mesh" rgba="0.776471 0.756863 0.737255 1" mesh="rf_knee" contype="0" conaffinity="0"/>
+                        <site name="rf_knee_connect" pos="0 0 -0.105" size="0.005" rgba="1 0 0 1"/>
+                    </body>
+                </body>
+            </body>
+
+            <body name="rb_hip_roll" pos="-0.02925 -0.0665 0.03">
+                <inertial pos="0 0.0102978 0" quat="0.5 0.5 0.5 0.5" mass="0.260983" diaginertia="7.24544e-05 4.61537e-05 4.52473e-05"/>
+                <geom type="mesh" rgba="0.529412 0.54902 0.54902 1" mesh="rb_hip_roll" contype="0" conaffinity="0"/>
+                <body name="rb_hip_pitch">
+                    <inertial pos="1.39082e-09 -0.00278116 -0.0296272" quat="0.707105 0.00155925 -0.00155925 0.707105" mass="0.0113202" diaginertia="3.84476e-06 3.27678e-06 6.09459e-07"/>
+                    <joint name="jrb_hip_pitch" pos="0 0 0" axis="0 -1 0" damping="0.1" armature="0.1"/>
+                    <geom type="mesh" rgba="1 1 1 1" mesh="rb_hip_pitch" contype="0" conaffinity="0"/>
+                    <body name="rb_knee" pos="0 -0.005 -0.05" quat="0.990051 0 -0.140707 0">
+                        <inertial pos="-1.02082e-06 -0.0030681 -0.060844" quat="0.707108 -1.12938e-05 0.000303611 0.707105" mass="0.0187565" diaginertia="2.02076e-05 1.93501e-05 1.17834e-06"/>
+                        <joint name="jrb_knee" pos="0 0 0" axis="0 -1 0"/>
+                        <geom type="mesh" rgba="1 1 1 1" mesh="rb_knee" contype="0" conaffinity="0"/>
+                        <site name="rb_knee_connect" pos="0 0 -0.105" size="0.005" rgba="1 0 0 1"/>
+                        <body name="r_motor" pos="0 -0.024 -0.105" quat="0.990051 0 0.140707 0">
+                            <inertial pos="0 -0.00155846 0" quat="0.707107 0 0 0.707107" mass="0.0933707" diaginertia="3.23068e-05 1.93902e-05 1.93902e-05"/>
+                            <joint name="jr_motor" pos="0 0 0" axis="0 -1 0" damping="0.3" armature="0.1"/>
+                            <geom type="mesh" mesh="r_motor" rgba="0.298039 0.298039 0.298039 1" contype="0" conaffinity="0"/>
+                            <geom type="cylinder" size="0.0258 0.011" zaxis="0 1 0" friction="1.5 0.01 0.005" rgba="1 0 1 0"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+        </body>
+    </worldbody>
+    <equality>
+        <connect site1="lf_knee_connect" site2="lb_knee_connect"/>
+        <connect site1="rf_knee_connect" site2="rb_knee_connect"/>
+    </equality>
+    <actuator>
+        <motor name="lf_motor"  joint="jlf_hip_pitch"  ctrlrange="-250 250" ctrllimited="true"/>
+        <motor name="lb_motor"  joint="jlb_hip_pitch"  ctrlrange="-250 250" ctrllimited="true"/>
+        <motor name="rf_motor"  joint="jrf_hip_pitch"  ctrlrange="-250 250" ctrllimited="true"/>
+        <motor name="rb_motor"  joint="jrb_hip_pitch"  ctrlrange="-250 250" ctrllimited="true"/>
+
+        <velocity name="l_wheel" joint="jl_motor" kv="200" ctrlrange="-250 250" ctrllimited="true"/>
+        <velocity name="r_wheel" joint="jr_motor" kv="200" ctrlrange="-250 250" ctrllimited="true"/>
+    </actuator>
+    <sensor>
+        <jointpos name="lf_motor_pos" joint="jlf_hip_pitch"/>
+        <jointpos name="lb_motor_pos" joint="jlb_hip_pitch"/>
+        <jointpos name="rf_motor_pos" joint="jrf_hip_pitch"/>
+        <jointpos name="rb_motor_pos" joint="jrb_hip_pitch"/>
+        <jointpos name="l_wheel_pos"  joint="jl_motor"/>
+        <jointpos name="r_wheel_pos"  joint="jr_motor"/>
+
+        <jointvel name="lf_motor_vel" joint="jlf_hip_pitch"/>
+        <jointvel name="lb_motor_vel" joint="jlb_hip_pitch"/>
+        <jointvel name="rf_motor_vel" joint="jrf_hip_pitch"/>
+        <jointvel name="rb_motor_vel" joint="jrb_hip_pitch"/>
+        <jointvel name="l_wheel_vel"  joint="jl_motor"/>
+        <jointvel name="r_wheel_vel"  joint="jr_motor"/>
+
+        <jointactuatorfrc name="lf_motor_torque" joint="jlf_hip_pitch"/>
+        <jointactuatorfrc name="lb_motor_torque" joint="jlb_hip_pitch"/>
+        <jointactuatorfrc name="rf_motor_torque" joint="jrf_hip_pitch"/>
+        <jointactuatorfrc name="rb_motor_torque" joint="jrb_hip_pitch"/>
+        <jointactuatorfrc name="l_wheel_torque"  joint="jl_motor"/>
+        <jointactuatorfrc name="r_wheel_torque"  joint="jr_motor"/>
+        
+        <framequat name="imu_quat" objtype="site" objname="imu_site"/>
+        <gyro name="imu_gyro" site="imu_site"/>
+        <accelerometer name="imu_acc" site="imu_site"/>
+        <framepos name="imu_pos" objtype="site" objname="imu_site"/>
+        <framelinvel name="imu_vel" objtype="site" objname="imu_site"/>
+    </sensor>
+</mujoco>
